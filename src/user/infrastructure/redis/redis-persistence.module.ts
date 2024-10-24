@@ -1,8 +1,13 @@
 import { CacheModule, CacheStore } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
+
 import { redisStore } from 'cache-manager-redis-yet';
 import type { RedisClientOptions } from 'redis';
-import { envs } from 'src/config';
+
+import { envs } from '../../../config';
+import { AttemptControlRepository } from '../../application';
+import { RedisConfigService } from './redis-config.service';
+import { RedisAdapterRepository } from './redisAdapter.repository';
 
 @Module({
   imports: [
@@ -14,7 +19,6 @@ import { envs } from 'src/config';
             port: envs.redis.port
           }
         });
-
         return {
           store: store as CacheStore,
           ttl: envs.redis.ttl,
@@ -22,8 +26,13 @@ import { envs } from 'src/config';
       },
     }),
   ],
-  controllers: [],
-  providers: [],
-  exports: [],
+  providers: [
+    RedisConfigService,
+    {
+      provide: AttemptControlRepository,
+      useClass: RedisAdapterRepository,
+    }
+  ],
+  exports: [RedisConfigService, AttemptControlRepository],
 })
 export class RedisPersistentStore {}
