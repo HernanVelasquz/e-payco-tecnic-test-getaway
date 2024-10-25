@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { GetAttemptsResponseBindingModel } from "../../../common";
 import { AttemptControlRepository } from "../../application";
+import { RedisConfigService } from "./redis-config.service";
 
 @Injectable()
 export class RedisAdapterRepository implements AttemptControlRepository {
-    constructor() {}
+    constructor(private readonly redisConfigService: RedisConfigService) {}
+    // Todo: Ajustar toda la logica de la peticion de los endpoints
     checkAttempts(requestType: string, key: string): Promise<GetAttemptsResponseBindingModel> {
         throw new Error("Method not implemented.");
     }

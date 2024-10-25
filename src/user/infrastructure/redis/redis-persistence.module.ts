@@ -5,7 +5,7 @@ import { redisStore } from 'cache-manager-redis-yet';
 import type { RedisClientOptions } from 'redis';
 
 import { envs } from '../../../config';
-import { AttemptControlRepository } from '../../application';
+import { AttemptControlRepository } from '../../application/ports/attempt-control.repository';
 import { RedisConfigService } from './redis-config.service';
 import { RedisAdapterRepository } from './redisAdapter.repository';
 

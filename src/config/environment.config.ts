@@ -6,6 +6,7 @@ interface IEnvironment {
   REDIS_PORT: number;
   REDIS_HOST: string;
   REDIS_TIME_TTL: number;
+  SERVICE_SOAP: string;
 }
 
 const environmentSchema = joi
@@ -14,6 +15,7 @@ const environmentSchema = joi
     REDIS_PORT: joi.number().required(),
     REDIS_HOST: joi.string().required(),
     REDIS_TIME_TTL: joi.number().required(),
+    SERVICE_SOAP: joi.string().required(),
   })
   .unknown(true);
 
@@ -34,4 +36,5 @@ export const envs = {
     port: environmentVariable.REDIS_PORT,
     ttl: environmentVariable.REDIS_TIME_TTL
   },
+  serviceSoap: environmentVariable.SERVICE_SOAP,
 };

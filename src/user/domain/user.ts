@@ -1,10 +1,12 @@
 import { IUser } from "./interfaces";
 
 export class User implements IUser {
-    id: string;
-    typeDocument: string;
-    numberDocument: string;
-    fullName: string;
-    email: string;
-    phoneNumber: string;
+    constructor(
+        public id: string,
+        public typeDocument: string,
+        public numberDocument: string,
+        public fullName: string,
+        public email: string,
+        public phoneNumber: string,
+    ) {}
 }

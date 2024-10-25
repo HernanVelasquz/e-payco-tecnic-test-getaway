@@ -1,4 +1,4 @@
 export abstract class HttpServiceRepository {
-    abstract get(url: string): Promise<any>;
-    abstract post<T>(url: string, data: T): Promise<any>;
+    abstract getInformationUser<T>(url: string, token?:string): Promise<T>;
+    abstract post<T, F>(url: string, data: T): Promise<F>;
 }
