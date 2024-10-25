@@ -3,7 +3,11 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class WalletRecharger {
     @IsNotEmpty()
     @IsString()
-    typeSearch: string;
+    phoneNumber: string;
+
+    @IsNotEmpty()
+    @IsString()
+    documentNumber: string;
 
     @IsNumber()
     @IsNotEmpty()

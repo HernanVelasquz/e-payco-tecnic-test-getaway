@@ -16,7 +16,7 @@ export class RegisterUserUseCase {
     private readonly userFactory: UserFactory,
   ) {}
 
-  async registerUser(
+  public async registerUser(
     registerUserDto: RegisterUserCommand,
   ): Promise<ResponseBuildingModel<IUser>> {
     try {
@@ -37,7 +37,7 @@ export class RegisterUserUseCase {
         envs.serviceSoap,
         user,
       );
-      
+
       if (!resultRegisterUser.data) return new ResponseBuildingModel<IUser>(false, null, CODE_ERROR.ERROR_REGISTER_USER);
 
       const resultWallet = await this.registerWalletUseCase.registerWallet({userId: user.id, phoneNumber: user.phoneNumber});
@@ -50,6 +50,7 @@ export class RegisterUserUseCase {
   }
 
   private async userExists(phoneNumber: string): Promise<boolean> {
-    return await this.httpServiceRepository.getInformationUser(phoneNumber);
+    const user = await this.httpServiceRepository.getInformation<IUser>(phoneNumber);
+    return !!user;
   }
 }

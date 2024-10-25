@@ -14,7 +14,7 @@ export class RegisterWalletUseCase {
     private readonly walletFactory: WalletFactory,
   ) {}
 
-  async registerWallet(
+  public async registerWallet(
     registerWallet: RegisterWalletCommands,
   ): Promise<ResponseBuildingModel<IWallet>> {
     const wallet = this.walletFactory.create(
