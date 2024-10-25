@@ -11,7 +11,6 @@ export class UserFactory {
     email: string,
     phoneNumber: string,
   ) {
-    const userId = UUID();
-    return new User(userId, typeDocument, number, fullName, email, phoneNumber);
+    return new User(UUID(), typeDocument, number, fullName, email, phoneNumber);
   }
 }

@@ -3,5 +3,5 @@ export interface IWallet {
     phoneNumber: string;
     userId: string;
     balance: number;
-    lastTransactionDate: Date;
+    createAt: Date;
 }

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 
-import { UserFactory } from '../domain';
+import { UserFactory, WalletFactory } from '../domain';
 import { UserController } from '../presentation';
 import { UserInfrastructureModule } from '../infrastructure';
-import { RegisterUserUseCase } from './use-cases';
+import { RegisterUserUseCase, RegisterWalletUseCase } from './use-cases';
 
 @Module({
   imports: [UserInfrastructureModule],
   controllers: [UserController],
-  providers: [UserFactory, RegisterUserUseCase],
+  providers: [UserFactory, RegisterUserUseCase, WalletFactory ,RegisterWalletUseCase],
 })
 export class UserModule {}

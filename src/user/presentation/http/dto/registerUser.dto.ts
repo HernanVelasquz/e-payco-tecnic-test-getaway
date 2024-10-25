@@ -22,5 +22,4 @@ export class RegisterUserDto implements IUser{
     @MaxLength(10)
     @MinLength(7)
     phoneNumber: string;
-
 }

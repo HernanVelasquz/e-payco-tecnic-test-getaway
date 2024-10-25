@@ -1,5 +1,5 @@
 export interface IUser {
-    id: string;
+    id?: string;
     typeDocument: string;
     numberDocument: string;
     fullName: string;

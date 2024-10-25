@@ -6,11 +6,13 @@ import { RegisterUserCommand } from '../command';
 import { HttpServiceRepository } from '../ports';
 import { envs } from '../../../config';
 import { ResponseBuildingModel, CODE_ERROR } from '../../../common';
+import { RegisterWalletUseCase } from './registerWalletUse-case.service';
 
 @Injectable()
 export class RegisterUserUseCase {
   constructor(
     private readonly httpServiceRepository: HttpServiceRepository,
+    private readonly registerWalletUseCase: RegisterWalletUseCase,
     private readonly userFactory: UserFactory,
   ) {}
 
@@ -30,14 +32,18 @@ export class RegisterUserUseCase {
         registerUserDto.email,
         registerUserDto.phoneNumber,
       );
-  
-      const result = await this.httpServiceRepository.post<IUser, AxiosResponse>(
+
+      const resultRegisterUser = await this.httpServiceRepository.post<IUser, AxiosResponse>(
         envs.serviceSoap,
         user,
       );
+      
+      if (!resultRegisterUser.data) return new ResponseBuildingModel<IUser>(false, null, CODE_ERROR.ERROR_REGISTER_USER);
 
-      if (!result.data) return new ResponseBuildingModel<IUser>(false, null, CODE_ERROR.ERROR_REGISTER_USER);
-      return new ResponseBuildingModel<IUser>(true, result.data);
+      const resultWallet = await this.registerWalletUseCase.registerWallet({userId: user.id, phoneNumber: user.phoneNumber});
+      if(!resultWallet.succeeded) return new ResponseBuildingModel<IUser>(false, null, CODE_ERROR.ERROR_REGISTER_USER);
+
+      return new ResponseBuildingModel<IUser>(true, resultRegisterUser.data);
     } catch (error) {
       throw new ResponseBuildingModel(false, null, CODE_ERROR.ERROR_INTERNAL)
     }
