@@ -12,7 +12,7 @@ export class RechargeWalletUseCase {
 
   public async rechargeWallet(
     walletRechargerCommands: WalletRechargerCommands,
-  ): Promise<ResponseBuildingModel<any>> {
+  ): Promise<ResponseBuildingModel<{ boolean; null }>> {
     const userExists = await this.getInformationUser(
       walletRechargerCommands.documentNumber,
     );
@@ -36,23 +36,23 @@ export class RechargeWalletUseCase {
     const newBalance =
       walletExists.balance + walletRechargerCommands.mountRecharger;
 
-    await this.updateBalance(walletExists.id, newBalance);
+    await this.updateBalance(walletExists.phoneNumber, newBalance);
 
     return new ResponseBuildingModel(true, null);
   }
 
   private async getInformationUser(userDocument: string): Promise<IUser> {
-    const user = await this.httpServiceRepository.getInformation<IUser>(
-      envs.serviceSoap,
-    );
-    return user;
+    const user = await this.httpServiceRepository.getInformation<
+      AxiosResponse<ResponseBuildingModel<IUser>>
+    >(`${envs.serviceSoap}/user/findUserByDocumentNumber/${userDocument}`);
+    return user.data.result;
   }
 
   private async getInformationWallet(walletNumber: string): Promise<IWallet> {
-    const wallet = await this.httpServiceRepository.getInformation<IWallet>(
-      envs.serviceSoap,
-    );
-    return wallet;
+    const wallet = await this.httpServiceRepository.getInformation<
+      AxiosResponse<ResponseBuildingModel<IWallet>>
+    >(`${envs.serviceSoap}/wallet/findWalletByNumber/${walletNumber}`);
+    return wallet.data.result;
   }
 
   private async updateBalance(
@@ -61,8 +61,10 @@ export class RechargeWalletUseCase {
   ): Promise<boolean> {
     const uploadBalance = this.httpServiceRepository.post<
       AxiosResponse<ResponseBuildingModel<{ walletNumber; amount }>>,
-      { walletNumber; amount }
-    >(envs.serviceSoap, { walletNumber, amount });
+      { newValance }
+    >(`${envs.serviceSoap}/wallet/${walletNumber}/updateBalance`, {
+      newValance: amount,
+    });
     return !!uploadBalance;
   }
 }
