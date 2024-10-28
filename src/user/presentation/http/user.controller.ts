@@ -2,12 +2,11 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RegisterUserDto, WalletRecharger } from './dto';
 import {
   RegisterUserUseCase,
-  RegisterUserCommand,
   RechargeWalletUseCase,
-  WalletRechargerCommands,
-} from '../../application';
+} from '../../application/use-cases';
 import { ResponseBuildingModel } from '../../../common';
 import { IUser } from '../../domain';
+import { RegisterUserCommand, WalletRechargerCommands } from 'src/user/application';
 
 @Controller('user')
 export class UserController {

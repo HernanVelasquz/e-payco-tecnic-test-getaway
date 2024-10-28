@@ -23,17 +23,17 @@ export class RegisterWalletUseCase {
     );
 
     const result = await this.httpServiceRepository.post<
-      IWallet,
-      AxiosResponse
-    >(envs.serviceSoap, wallet);
+    AxiosResponse<ResponseBuildingModel<IWallet>>,
+    IWallet
+  >(`${envs.serviceSoap}/wallet/registerWallet`, wallet);
 
-    if (!result.data)
+    if (!result.data.succeeded)
       return new ResponseBuildingModel<IWallet>(
         false,
         null,
         CODE_ERROR.ERROR_REGISTER_USER,
       );
 
-    return new ResponseBuildingModel<IWallet>(true, result.data);
+    return new ResponseBuildingModel<IWallet>(true, result.data.result);
   }
 }

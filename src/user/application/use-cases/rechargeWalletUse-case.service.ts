@@ -60,8 +60,8 @@ export class RechargeWalletUseCase {
     amount: number,
   ): Promise<boolean> {
     const uploadBalance = this.httpServiceRepository.post<
-      { walletNumber; amount },
-      AxiosResponse
+      AxiosResponse<ResponseBuildingModel<{ walletNumber; amount }>>,
+      { walletNumber; amount }
     >(envs.serviceSoap, { walletNumber, amount });
     return !!uploadBalance;
   }

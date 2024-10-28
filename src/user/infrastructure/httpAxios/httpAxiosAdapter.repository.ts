@@ -10,10 +10,10 @@ export class HttpAxiosAdapterRepository implements HttpServiceRepository {
     ) {}
     async getInformation<T>(url: string, token?: string): Promise<T> {
         const response = await lastValueFrom(this.httpService.get<T>(url));
-        return response.data;
+        return response as T;
     }
-    async post<T, F>(url: string, data: T): Promise<F> {
-        const response = await lastValueFrom(this.httpService.post<F>(url, data));
-        return response.data;
+    async post<T, F>(url: string, data: F): Promise<T> {
+        const response = await lastValueFrom(this.httpService.post<T>(url, data));
+        return response as T;
     }
 }
