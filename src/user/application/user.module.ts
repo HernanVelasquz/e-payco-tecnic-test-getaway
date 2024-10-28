@@ -4,6 +4,7 @@ import { UserFactory, WalletFactory } from '../domain';
 import { UserInfrastructureModule } from '../infrastructure';
 import { UserController } from '../presentation';
 import {
+  CheckBalanceUseCase,
   RechargeWalletUseCase,
   RegisterUserUseCase,
   RegisterWalletUseCase,
@@ -18,6 +19,7 @@ import {
     WalletFactory,
     RegisterWalletUseCase,
     RechargeWalletUseCase,
+    CheckBalanceUseCase,
   ],
 })
 export class UserModule {}

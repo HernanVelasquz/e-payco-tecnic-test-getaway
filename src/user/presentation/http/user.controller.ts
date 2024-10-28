@@ -1,18 +1,23 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { RegisterUserDto, WalletRecharger } from './dto';
 import {
   RegisterUserUseCase,
   RechargeWalletUseCase,
+  CheckBalanceUseCase,
 } from '../../application/use-cases';
 import { ResponseBuildingModel } from '../../../common';
 import { IUser } from '../../domain';
-import { RegisterUserCommand, WalletRechargerCommands } from 'src/user/application';
+import {
+  RegisterUserCommand,
+  WalletRechargerCommands,
+} from 'src/user/application';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly rechargeWalletUseCase: RechargeWalletUseCase,
+    private readonly checkBalanceUseCase: CheckBalanceUseCase,
   ) {}
 
   @Post('/register-user')
@@ -48,5 +53,13 @@ export class UserController {
   public confirmPayment(@Body() bodyConfirmPayment) {}
 
   @Get('checkBalance')
-  public checkBalance(@Param() numberDocument, @Param() phoneNumber) {}
+  public checkBalance(
+    @Query('numberDocument') numberDocument,
+    @Query('phoneNumber') phoneNumber,
+  ) {
+    return this.checkBalanceUseCase.checkBalanceWallet(
+      numberDocument,
+      phoneNumber,
+    );
+  }
 }

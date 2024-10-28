@@ -29,5 +29,10 @@ export const CODE_ERROR = {
         error: 'No hay ninguna wallet asociado a este usuario',
         title: 'User Not Found',
     },
+    ERROR_USER_NOT_MATCH: {
+        code: 'ERR-007',
+        error: 'El usuario la cuenta no coincide con la cuenta que se busca',
+        title: 'No existe coincidence',
+    }
 };
 

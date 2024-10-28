@@ -13,32 +13,40 @@ export class RechargeWalletUseCase {
   public async rechargeWallet(
     walletRechargerCommands: WalletRechargerCommands,
   ): Promise<ResponseBuildingModel<{ boolean; null }>> {
-    const userExists = await this.getInformationUser(
-      walletRechargerCommands.documentNumber,
-    );
-    if (!userExists)
-      throw new ResponseBuildingModel(
-        false,
-        null,
-        CODE_ERROR.ERROR_USER_NOT_FOUND,
+    try {
+      const userExists = await this.getInformationUser(
+        walletRechargerCommands.documentNumber,
       );
+      if (!userExists)
+        throw new ResponseBuildingModel(
+          false,
+          null,
+          CODE_ERROR.ERROR_USER_NOT_FOUND,
+        );
 
-    const walletExists = await this.getInformationWallet(
-      walletRechargerCommands.phoneNumber,
-    );
-    if (!walletExists)
-      throw new ResponseBuildingModel(
-        false,
-        null,
-        CODE_ERROR.ERROR_WALLET_NOT_FOUND,
+      const walletExists = await this.getInformationWallet(
+        walletRechargerCommands.phoneNumber,
       );
+      if (!walletExists)
+        throw new ResponseBuildingModel(
+          false,
+          null,
+          CODE_ERROR.ERROR_WALLET_NOT_FOUND,
+        );
 
-    const newBalance =
-      walletExists.balance + walletRechargerCommands.mountRecharger;
+      const newBalance =
+        walletExists.balance + walletRechargerCommands.mountRecharger;
 
-    await this.updateBalance(walletExists.phoneNumber, newBalance);
+      await this.updateBalance(walletExists.phoneNumber, newBalance);
 
-    return new ResponseBuildingModel(true, null);
+      return new ResponseBuildingModel(true, null);
+    } catch (error) {
+      throw new ResponseBuildingModel(false, null, {
+        code: error.status,
+        error: error.message,
+        title: 'Error Internal',
+      });
+    }
   }
 
   private async getInformationUser(userDocument: string): Promise<IUser> {
