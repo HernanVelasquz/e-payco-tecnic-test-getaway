@@ -7,11 +7,11 @@ import type { RedisClientOptions } from 'redis';
 import { envs } from '../../../config';
 import { AttemptControlRepository } from '../../application/ports/attempt-control.repository';
 import { RedisConfigService } from './redis-config.service';
-import { RedisAdapterRepository } from './redisAdapter.repository';
 
 @Module({
   imports: [
     CacheModule.registerAsync<RedisClientOptions>({
+      isGlobal: true,
       useFactory: async () => {
         const store =  await redisStore({
           socket: {
@@ -30,7 +30,7 @@ import { RedisAdapterRepository } from './redisAdapter.repository';
     RedisConfigService,
     {
       provide: AttemptControlRepository,
-      useClass: RedisAdapterRepository,
+      useClass: RedisConfigService,
     }
   ],
   exports: [RedisConfigService, AttemptControlRepository],

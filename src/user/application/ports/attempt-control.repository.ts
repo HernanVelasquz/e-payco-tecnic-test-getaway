@@ -1,7 +1,5 @@
-import { GetAttemptsResponseBindingModel } from "../../../common";
-
 export abstract class AttemptControlRepository {
-    abstract checkAttempts(requestType: string, key: string): Promise<GetAttemptsResponseBindingModel>;
-    abstract deleteAttempt(requestType: string, key: string): Promise<boolean>;
-    abstract getAttempts(requestType: string, key: string): Promise<GetAttemptsResponseBindingModel>;
+    abstract setCache(requestType: string, key: string): Promise<void>;
+    abstract deleteCache(requestType: string, key: string): Promise<void>;
+    abstract getCache(key: string): Promise<string>;
 }

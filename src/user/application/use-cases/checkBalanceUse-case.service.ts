@@ -9,7 +9,7 @@ import { envs } from 'src/config';
 export class CheckBalanceUseCase {
   constructor(private readonly httpServiceRepository: HttpServiceRepository) {}
 
-  async checkBalanceWallet(
+  public async checkBalanceWallet(
     numberDocument: string,
     phoneNumber: string,
   ): Promise<ResponseBuildingModel<IWallet>> {

@@ -5,6 +5,7 @@ import { UserInfrastructureModule } from '../infrastructure';
 import { UserController } from '../presentation';
 import {
   CheckBalanceUseCase,
+  PaymentUseCaseService,
   RechargeWalletUseCase,
   RegisterUserUseCase,
   RegisterWalletUseCase,
@@ -20,6 +21,7 @@ import {
     RegisterWalletUseCase,
     RechargeWalletUseCase,
     CheckBalanceUseCase,
+    PaymentUseCaseService
   ],
 })
 export class UserModule {}

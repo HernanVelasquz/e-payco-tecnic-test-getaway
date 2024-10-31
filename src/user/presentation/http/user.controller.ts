@@ -1,16 +1,19 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { RegisterUserDto, WalletRecharger } from './dto';
-import {
-  RegisterUserUseCase,
-  RechargeWalletUseCase,
-  CheckBalanceUseCase,
-} from '../../application/use-cases';
+
 import { ResponseBuildingModel } from '../../../common';
-import { IUser } from '../../domain';
 import {
+  RegisterPaymentCommands,
   RegisterUserCommand,
   WalletRechargerCommands,
-} from 'src/user/application';
+} from '../../../user/application';
+import {
+  CheckBalanceUseCase,
+  PaymentUseCaseService,
+  RechargeWalletUseCase,
+  RegisterUserUseCase,
+} from '../../application/use-cases';
+import { IUser, IWallet } from '../../domain';
+import { RegisterPaymentDto, RegisterUserDto, WalletRecharger } from './dto';
 
 @Controller('user')
 export class UserController {
@@ -18,6 +21,7 @@ export class UserController {
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly rechargeWalletUseCase: RechargeWalletUseCase,
     private readonly checkBalanceUseCase: CheckBalanceUseCase,
+    private readonly paymentUseCaseService: PaymentUseCaseService,
   ) {}
 
   @Post('/register-user')
@@ -36,7 +40,9 @@ export class UserController {
   }
 
   @Post('/wallet-recharger')
-  public walletRecharge(@Body() bodyWalletRecharger: WalletRecharger) {
+  public walletRecharge(
+    @Body() bodyWalletRecharger: WalletRecharger,
+  ): Promise<ResponseBuildingModel<{ boolean; null }>> {
     return this.rechargeWalletUseCase.rechargeWallet(
       new WalletRechargerCommands(
         bodyWalletRecharger.phoneNumber,
@@ -47,7 +53,14 @@ export class UserController {
   }
 
   @Post('/payment')
-  public prePayment(@Body() bodyPrePayment) {}
+  public prePayment(@Body() bodyPrePayment: RegisterPaymentDto) {
+    return this.paymentUseCaseService.payment(
+      new RegisterPaymentCommands(
+        bodyPrePayment.phoneNumber,
+        bodyPrePayment.discountValue,
+      ),
+    );
+  }
 
   @Post('/confirm-payment')
   public confirmPayment(@Body() bodyConfirmPayment) {}
@@ -56,7 +69,7 @@ export class UserController {
   public checkBalance(
     @Query('numberDocument') numberDocument,
     @Query('phoneNumber') phoneNumber,
-  ) {
+  ): Promise<ResponseBuildingModel<IWallet>> {
     return this.checkBalanceUseCase.checkBalanceWallet(
       numberDocument,
       phoneNumber,
