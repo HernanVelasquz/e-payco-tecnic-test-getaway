@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 
-import { IUser, IWallet } from '../../domain';
-import { CODE_ERROR, ResponseBuildingModel } from '../../../common';
+import {IWallet} from '../../domain/interfaces/wallet.interface'
+import { IUser } from '../../domain/interfaces/user.interface';
+import { CODE_ERROR } from '../../../common/error/codeError.type';
 import { envs } from '../../../config';
-import { RegisterPaymentCommands } from '../command';
+import { RegisterPaymentCommands } from '../command/registerPayment.commands';
+import {ResponseBuildingModel} from '../../../common/response/responseBuilding';
 import {
   AttemptControlRepository,
   HttpServiceRepository,

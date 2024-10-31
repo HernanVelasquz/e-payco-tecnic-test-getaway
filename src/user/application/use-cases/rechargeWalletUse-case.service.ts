@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { HttpServiceRepository } from '../ports';
 import { WalletRechargerCommands } from '../command';
-import { IUser, IWallet } from 'src/user/domain';
-import { envs } from 'src/config';
-import { CODE_ERROR, ResponseBuildingModel } from 'src/common';
+import { IWallet } from '../../../user/domain/interfaces/wallet.interface';
+import { IUser } from '../../../user/domain/interfaces/user.interface';
+import { envs } from '../../../config/environment.config';
+import { CODE_ERROR } from '../../../common/error/codeError.type';
+import { ResponseBuildingModel } from '../../../common/response/responseBuilding';
 import { AxiosResponse } from 'axios';
 
 @Injectable()

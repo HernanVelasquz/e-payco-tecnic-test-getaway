@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { WalletFactory } from '../../domain/factories/wallet.factory';
-import { HttpServiceRepository } from '../ports';
-import { CODE_ERROR, ResponseBuildingModel } from '../../../common';
-import { IWallet } from '../../domain';
-import { RegisterWalletCommands } from '../command';
+import { HttpServiceRepository } from '../ports/http-service.repository';
+import { CODE_ERROR } from '../../../common';
+import {ResponseBuildingModel} from '../../../common/response/responseBuilding'
+import { IWallet } from '../../domain/interfaces/wallet.interface';
+import { RegisterWalletCommands } from '../command/registerWallet.commands';
 import { envs } from '../../../config';
 
 @Injectable()

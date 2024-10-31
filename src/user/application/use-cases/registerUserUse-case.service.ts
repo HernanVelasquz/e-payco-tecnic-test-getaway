@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 
-import { IUser, UserFactory } from '../../domain';
-import { RegisterUserCommand } from '../command';
-import { HttpServiceRepository } from '../ports';
-import { envs } from '../../../config';
-import { ResponseBuildingModel, CODE_ERROR } from '../../../common';
+import { IUser } from '../../domain/interfaces/user.interface';
+import {UserFactory} from '../../domain/factories/user.factory'
+import { RegisterUserCommand } from '../command/registerUser.commands';
+import { HttpServiceRepository } from '../ports/http-service.repository';
+import { envs } from '../../../config/environment.config';
+import {CODE_ERROR} from '../../../common/error/codeError.type'
+import { ResponseBuildingModel } from '../../../common/response/responseBuilding';
 import { RegisterWalletUseCase } from './registerWalletUse-case.service';
 
 @Injectable()
