@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SendGridMailRepository } from '../../application/ports/emailer-mail.repository';
 import { MailerService } from '@nestjs-modules/mailer';
-import { envs } from 'src/config';
+import { envs } from '../../../config/environment.config';
 
 @Injectable()
 export class SendGridMailAdapter implements SendGridMailRepository {

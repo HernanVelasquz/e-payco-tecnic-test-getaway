@@ -1,8 +1,9 @@
+import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
+
+import { envs } from '../../../config/environment.config';
 import { SendGridMailRepository } from '../../application/ports/emailer-mail.repository';
 import { SendGridMailAdapter } from './mailer-mail.adapter';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { envs } from 'src/config';
 
 @Module({
   imports: [
