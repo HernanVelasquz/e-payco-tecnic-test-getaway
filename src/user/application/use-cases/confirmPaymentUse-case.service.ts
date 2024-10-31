@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { AttemptControlRepository, HttpServiceRepository } from '../ports';
-import { ResponseBuildingModel } from 'src/common';
+import { ResponseBuildingModel } from '../../../common/response/responseBuilding';
 import { AxiosResponse } from 'axios';
-import { envs } from 'src/config';
-import { IWallet } from 'src/user/domain';
+import { envs } from '../../../config/environment.config';
+import { IWallet } from '../../../user/domain/interfaces/wallet.interface';
 import { CODE_ERROR } from '../../../common/error'
-import { ConfirmPaymentCommand } from '../command';
+import { ConfirmPaymentCommand } from '../command/confirmPayment.commands';
 @Injectable()
 export class ConfirmPaymentUseCase {
   constructor(

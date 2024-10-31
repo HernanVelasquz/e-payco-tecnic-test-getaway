@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { HttpServiceRepository } from '../ports';
-import { CODE_ERROR, ResponseBuildingModel } from 'src/common';
-import { IUser, IWallet } from 'src/user/domain';
+import { ResponseBuildingModel } from '../../../common/response/responseBuilding';
+import { CODE_ERROR } from '../../../common/error/codeError.type';
+import {  IWallet } from '../../../user/domain/interfaces/wallet.interface';
+import {IUser} from '../../../user/domain/interfaces/user.interface'
 import { AxiosResponse } from 'axios';
-import { envs } from 'src/config';
+import { envs } from '../../../config/environment.config';
 
 @Injectable()
 export class CheckBalanceUseCase {
