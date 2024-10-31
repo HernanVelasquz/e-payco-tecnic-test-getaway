@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 
-import { IWallet } from '../../domain';
+import { IUser, IWallet } from '../../domain';
 import { CODE_ERROR, ResponseBuildingModel } from '../../../common';
 import { envs } from '../../../config';
 import { RegisterPaymentCommands } from '../command';
 import {
   AttemptControlRepository,
   HttpServiceRepository,
+  SendGridMailRepository,
   TokenServiceRepository,
 } from '../ports';
 
@@ -18,6 +19,7 @@ export class PaymentUseCaseService {
     private readonly httpServiceRepository: HttpServiceRepository,
     private readonly tokenServiceRepository: TokenServiceRepository,
     private readonly attemptControlRepository: AttemptControlRepository,
+    private readonly sendGridMailRepository: SendGridMailRepository,
   ) {}
 
   public async payment(bodyRegisterPayment: RegisterPaymentCommands) {
@@ -40,9 +42,36 @@ export class PaymentUseCaseService {
           'Existe un pago pendiente, por favor valide su correo',
         );
       }
+
       const token = await this.tokenServiceRepository.generateToken();
-      await this.attemptControlRepository.setCache(typeRequest, String(token));
+      const redisObjectPayment = {
+        token: token,
+        payment: bodyRegisterPayment.discountValue,
+      };
+
+      const user = await this.getInformationUser(
+        bodyRegisterPayment.phoneNumber,
+      );
+
+      await this.attemptControlRepository.setCache(
+        typeRequest,
+        JSON.stringify(redisObjectPayment),
+      );
+
+      const resultSendEmail = await this.sendGridMailRepository.sendEmailWithTemplate(user.email, {
+        discountValue: bodyRegisterPayment.discountValue,
+        codePayment: token,
+      });
+
+      return new ResponseBuildingModel(true,resultSendEmail)
     } catch (error) {}
+  }
+
+  private async getInformationUser(phoneNumber: string): Promise<IUser> {
+    const user = await this.httpServiceRepository.getInformation<
+      AxiosResponse<ResponseBuildingModel<IUser>>
+    >(`${envs.serviceSoap}/user/findUserByPhoneNumber/${phoneNumber}`);
+    return user.data.result;
   }
 
   private async getInformationWallet(walletNumber: string): Promise<IWallet> {
@@ -53,7 +82,8 @@ export class PaymentUseCaseService {
   }
 
   private async validatePaymentExist(keyAttempt: string): Promise<boolean> {
-    const exitsPayment = this.attemptControlRepository.getCache(keyAttempt);
-    return !!exitsPayment
+    const exitsPayment =
+      await this.attemptControlRepository.getCache(keyAttempt);
+    return !!exitsPayment;
   }
 }

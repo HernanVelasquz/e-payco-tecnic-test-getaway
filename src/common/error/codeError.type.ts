@@ -33,6 +33,26 @@ export const CODE_ERROR = {
         code: 'ERR-007',
         error: 'El usuario la cuenta no coincide con la cuenta que se busca',
         title: 'No existe coincidence',
+    },
+    ERROR_TOKEN_EXPIRED: {
+        code: 'ERR-008',
+        error: 'El token de pago ha expirado, por favor intente de nuevo',
+        title: 'Token Expired',
+    },
+    ERROR_TOKEN_NOT_MATCH: {
+        code: 'ERR-009',
+        error: 'El token de pago no coincide con el que se busca',
+        title: 'Token Not Found',
+    },
+    ERROR_BALANCE_INSUFFICIENT: {
+        code: 'ERR-010',
+        error: 'No hay suficiente balance para realizar la compra',
+        title: 'Balance Insufficient',
+    },
+    ERROR_PROCESS_FAILED: {
+        code: 'ERR-011',
+        error: 'Hubo un problema al procesar la compra, por favor intente de nuevo',
+        title: 'Process Failed',
     }
 };
 

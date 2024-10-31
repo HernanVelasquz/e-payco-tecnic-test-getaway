@@ -7,6 +7,12 @@ interface IEnvironment {
   REDIS_HOST: string;
   REDIS_TIME_TTL: number;
   SERVICE_SOAP: string;
+  MAIL_HOST: string;
+  MAIL_USER: string;
+  MAIL_PASSWORD: string;
+  MAIL_PORT: number;
+  DEFAULT_EMAIL_FROM: string;
+
 }
 
 const environmentSchema = joi
@@ -16,6 +22,11 @@ const environmentSchema = joi
     REDIS_HOST: joi.string().required(),
     REDIS_TIME_TTL: joi.number().required(),
     SERVICE_SOAP: joi.string().required(),
+    MAIL_HOST: joi.string().required(),
+    MAIL_USER: joi.string().required(),
+    MAIL_PASSWORD: joi.string().required(),
+    MAIL_PORT: joi.number().required(),
+    DEFAULT_EMAIL_FROM: joi.string().required(),
   })
   .unknown(true);
 
@@ -37,4 +48,13 @@ export const envs = {
     ttl: environmentVariable.REDIS_TIME_TTL
   },
   serviceSoap: environmentVariable.SERVICE_SOAP,
+  mail: {
+    host: environmentVariable.MAIL_HOST,
+    port: environmentVariable.MAIL_PORT,
+    auth: {
+      user: environmentVariable.MAIL_USER,
+      pass: environmentVariable.MAIL_PASSWORD,
+    },
+    defaultEmailFrom: environmentVariable.DEFAULT_EMAIL_FROM,
+  }
 };
